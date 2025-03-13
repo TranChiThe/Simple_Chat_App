@@ -6,6 +6,7 @@ import com.example.chat_app.domain.model.MyObjectBox
 import com.example.chat_app.domain.model.User
 import com.example.chat_app.domain.repositories.UserRepository
 import com.example.chat_app.domain.use_cases.User.GetAllUser
+import com.example.chat_app.domain.use_cases.User.LoginAccount
 import com.example.chat_app.domain.use_cases.User.RegisterAccount
 import com.example.chat_app.domain.use_cases.User.UserUserCase
 import dagger.Module
@@ -43,7 +44,8 @@ object AppModule {
     @Provides
     @Singleton
     fun provideUserUserCase(userRepository: UserRepository):UserUserCase = UserUserCase(
+        getAllUser = GetAllUser(userRepository),
         registerAccount = RegisterAccount(userRepository),
-        getAllUser = GetAllUser(userRepository)
-    )
+        loginAccount = LoginAccount(userRepository)
+        )
 }

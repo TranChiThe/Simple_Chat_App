@@ -7,4 +7,5 @@ import kotlinx.coroutines.flow.Flow
 interface UserRepository {
     fun getAllUser():Flow<List<User>>
     suspend fun registerAccount (user: User)
+    suspend fun loginAccount(email: String, password: String): User?
 }

@@ -7,4 +7,5 @@ sealed class UserEvent {
     data class EnterEmail(val email: String): UserEvent()
     data class EnterPassword(val password: String): UserEvent()
     object RegisterAccount: UserEvent()
+    data class LoginAccount(val email: String, val password: String): UserEvent()
 }

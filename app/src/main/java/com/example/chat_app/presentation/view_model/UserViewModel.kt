@@ -1,12 +1,17 @@
 package com.example.chat_app.presentation.view_model
 
+import android.util.Log
 import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.chat_app.domain.model.User
 import com.example.chat_app.domain.use_cases.User.UserUserCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -28,6 +33,8 @@ class UserViewModel @Inject constructor(
     
     private val _userFlow = MutableStateFlow<List<User>>(emptyList())
     val userFlow: StateFlow<List<User>> = _userFlow
+
+    var loginState by  mutableStateOf<String?>(null)
 
     init {
         getAllUser()
@@ -64,6 +71,23 @@ class UserViewModel @Inject constructor(
                         role = "1"
                     )
                     userUserCase.registerAccount(user)
+                }
+            }
+
+            is UserEvent.LoginAccount -> {
+                viewModelScope.launch {
+                    if (event.email.isBlank() || event.password.isBlank()) {
+                        loginState = "Please enter email and password!"
+                        return@launch
+                    }
+                    val user = userUserCase.loginAccount(event.email, event.password)
+                    loginState = if (user != null) {
+                        "Success"
+                    } else {
+                        "Invalid email or password!"
+                    }
+                    delay(1000)
+                    loginState = null
                 }
             }
         }
