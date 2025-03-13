@@ -1,0 +1,168 @@
+openapi: 3.0.0
+info:
+  title: User API
+  description: API quản lý người dùng
+  version: 1.0.0
+
+servers:
+  - url: https://api.example.com
+    description: Production Server
+  - url: http://localhost:8080
+    description: Local Development Server
+
+paths:
+  /users:
+    get:
+      summary: Lấy danh sách người dùng
+      operationId: getUsers
+      tags:
+        - User
+      responses:
+        "200":
+          description: Danh sách người dùng
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+        "401":
+          description: Không có quyền truy cập
+        "500":
+          description: Lỗi máy chủ
+
+  /users/{id}:
+    get:
+      summary: Lấy thông tin người dùng
+      operationId: getUserById
+      tags:
+        - User
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Thông tin người dùng
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "404":
+          description: Không tìm thấy người dùng
+
+    put:
+      summary: Cập nhật thông tin người dùng
+      operationId: updateUser
+      tags:
+        - User
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        "200":
+          description: Cập nhật thành công
+        "400":
+          description: Dữ liệu không hợp lệ
+        "404":
+          description: Không tìm thấy người dùng
+
+    delete:
+      summary: Xóa người dùng
+      operationId: deleteUser
+      tags:
+        - User
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Xóa thành công
+        "404":
+          description: Không tìm thấy người dùng
+
+  /register:
+    post:
+      summary: Đăng ký người dùng mới
+      operationId: registerUser
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        "201":
+          description: Đăng ký thành công
+        "400":
+          description: Dữ liệu không hợp lệ
+
+  /login:
+    post:
+      summary: Đăng nhập người dùng
+      operationId: loginUser
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+      responses:
+        "200":
+          description: Đăng nhập thành công, trả về token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        "401":
+          description: Sai thông tin đăng nhập
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+        role:
+          type: string
+          enum: [admin, user]
+    LoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
