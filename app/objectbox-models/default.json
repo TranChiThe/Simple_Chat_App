@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:6743794176057541067",
-      "lastPropertyId": "8:3872569144257377288",
+      "lastPropertyId": "10:6548519886189899822",
       "name": "User",
       "properties": [
         {
@@ -33,6 +33,16 @@
           "id": "8:3872569144257377288",
           "name": "role",
           "type": 9
+        },
+        {
+          "id": "9:251329298998704199",
+          "name": "image",
+          "type": 9
+        },
+        {
+          "id": "10:6548519886189899822",
+          "name": "phoneNumber",
+          "type": 5
         }
       ],
       "relations": []

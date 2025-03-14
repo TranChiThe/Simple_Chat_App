@@ -46,7 +46,7 @@ fun BottomNavigationBar(navController: NavController) {
     val navBackStackEntry = navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry.value?.destination?.route
 
-    if(currentRoute == "login" || currentRoute == "register") return
+    if(currentRoute == "login" || currentRoute == "register" || currentRoute == "welcome") return
     Column {
         Divider(color = Color.Gray, thickness = 1.dp)
         NavigationBar(
@@ -59,7 +59,7 @@ fun BottomNavigationBar(navController: NavController) {
                     selected = isSelected,
                     onClick = {
                         navController.navigate(item.route) {
-                            popUpTo("search") {
+                            popUpTo("chat") {
                                 inclusive = false
                             }
                             launchSingleTop = true
