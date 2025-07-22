@@ -10,3 +10,5 @@ import com.example.chat_app.R
 fun ChatScreen (navController: NavHostController){
     Icon(painter = painterResource(id= R.drawable.message_square_chat_svgrepo_com), contentDescription = null)
 }
+@Composable
+fun Test(){}
